@@ -1,14 +1,12 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import Layout from "@/components/layout";
+import { HeroImageRight } from "@/components/hero";
 
 export default function Home() {
   return (
-    <>
+    <Layout home>
       <Head>
-        <title>Create Next App</title>
+        <title>Cyriously in Japan</title>
         <meta
           name="description"
           content="Cyriously in or planning to be in Japan."
@@ -17,8 +15,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>スタト！</h1>
+        <HeroImageRight />
       </main>
-    </>
+    </Layout>
   );
 }
