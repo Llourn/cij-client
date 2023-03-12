@@ -1,6 +1,6 @@
 import { createStyles, Container, Group, ActionIcon, rem } from "@mantine/core";
 import { IconBrandTwitter } from "@tabler/icons-react";
-import MainLogo from "./MainLogo";
+import MainLogo from "./main-logo";
 
 const useStyles = createStyles((theme) => ({
   footer: {

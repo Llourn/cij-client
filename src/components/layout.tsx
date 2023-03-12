@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { FooterSocial } from "./FooterSocial";
-import { HeaderSimple } from "./HeaderSimple";
+import { FooterSocial } from "./footer-social";
+import { HeaderSimple } from "./header-simple";
 
 export const siteTitle = "Cyriously In Japan";
 

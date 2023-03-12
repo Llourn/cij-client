@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import MainLogo from "./MainLogo";
+import MainLogo from "./main-logo";
 
 const useStyles = createStyles((theme) => ({
   header: {
