@@ -1,6 +1,6 @@
-import Head from "next/head";
-import Landing from "../modules/landing";
-import Layout from "../components/layout";
+import Head from 'next/head';
+import Landing from '../modules/landing';
+import Layout from '../components/layout';
 
 export default function Home() {
   return (

@@ -8,24 +8,24 @@ import {
   SimpleGrid,
   Container,
   rem,
-} from "@mantine/core";
-import { IconGoGame, IconPlaneTilt, IconUserPlus } from "@tabler/icons-react";
+} from '@mantine/core';
+import { IconGoGame, IconPlaneTilt, IconUserPlus } from '@tabler/icons-react';
 
 const mockdata = [
   {
-    title: "Kana Game",
+    title: 'Kana Game',
     description:
-      "Test your kana knowledge of all levels of Hirigana and Katakana. Compete against other users for top spot on the leaderboards!",
+      'Test your kana knowledge of all levels of Hirigana and Katakana. Compete against other users for top spot on the leaderboards!',
     icon: IconGoGame,
   },
   {
-    title: "Places to Visit",
+    title: 'Places to Visit',
     description:
-      "Make a list of all the amazing places you want to visit when you get to Japan! Upload inspirational photos and list all the things you want to do when you get there.",
+      'Make a list of all the amazing places you want to visit when you get to Japan! Upload inspirational photos and list all the things you want to do when you get there.',
     icon: IconPlaneTilt,
   },
   {
-    title: "Connect with other Users",
+    title: 'Connect with other Users',
     description:
       "Post your successes and struggles! Everyone here is moving toward a similar goal, let's help eachother out!",
     icon: IconUserPlus,
@@ -37,37 +37,37 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(34),
     fontWeight: 900,
 
-    [theme.fn.smallerThan("sm")]: {
+    [theme.fn.smallerThan('sm')]: {
       fontSize: rem(24),
     },
   },
 
   description: {
     maxWidth: 600,
-    margin: "auto",
+    margin: 'auto',
 
-    "&::after": {
+    '&::after': {
       content: '""',
-      display: "block",
+      display: 'block',
       backgroundColor: theme.fn.primaryColor(),
       width: rem(45),
       height: rem(2),
       marginTop: theme.spacing.sm,
-      marginLeft: "auto",
-      marginRight: "auto",
+      marginLeft: 'auto',
+      marginRight: 'auto',
     },
   },
 
   card: {
     border: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[1]
+      theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
     }`,
   },
 
   cardTitle: {
-    "&::after": {
+    '&::after': {
       content: '""',
-      display: "block",
+      display: 'block',
       backgroundColor: theme.fn.primaryColor(),
       width: rem(45),
       height: rem(2),
@@ -117,7 +117,7 @@ export function FeaturesCards() {
         cols={3}
         spacing="xl"
         mt={50}
-        breakpoints={[{ maxWidth: "md", cols: 1 }]}
+        breakpoints={[{ maxWidth: 'md', cols: 1 }]}
       >
         {features}
       </SimpleGrid>

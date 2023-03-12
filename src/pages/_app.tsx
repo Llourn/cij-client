@@ -1,7 +1,7 @@
-import "@/src/styles/globals.css";
-import { AppProps } from "next/app";
-import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
+import '@/src/styles/globals.css';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import { MantineProvider } from '@mantine/core';
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -21,22 +21,22 @@ export default function App(props: AppProps) {
         withNormalizeCSS
         theme={{
           /** Put your mantine theme override here */
-          colorScheme: "light",
+          colorScheme: 'light',
           colors: {
             mainRed: [
-              "#ffe3e3",
-              "#ffc9c9",
-              "#ffa8a8",
-              "#ff8787",
-              "#ff6b6b",
-              "#fa5252",
-              "#f03e3e",
-              "#e03131",
-              "#c92a2a",
-              "#B42525",
+              '#ffe3e3',
+              '#ffc9c9',
+              '#ffa8a8',
+              '#ff8787',
+              '#ff6b6b',
+              '#fa5252',
+              '#f03e3e',
+              '#e03131',
+              '#c92a2a',
+              '#B42525',
             ],
           },
-          primaryColor: "mainRed",
+          primaryColor: 'mainRed',
           primaryShade: {
             light: 8,
             dark: 9,
