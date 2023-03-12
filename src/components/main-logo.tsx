@@ -6,7 +6,6 @@ const useStyles = createStyles((theme) => ({
     fill: theme.primaryColor,
   },
   logoColor: {
-    // fill: theme.primaryColor,
     fill: theme.fn.primaryColor(),
   },
 }));
