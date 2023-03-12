@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Landing from '../modules/landing';
+import Landing from '../components/landing';
 import Layout from '../components/layout';
 
 export default function Home() {
