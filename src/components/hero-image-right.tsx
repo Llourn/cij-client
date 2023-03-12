@@ -78,6 +78,10 @@ const useStyles = createStyles((theme) => ({
       width: '100%',
     },
   },
+
+  textNoWrap: {
+    whiteSpace: 'nowrap',
+  },
 }));
 
 export function HeroImageRight() {
@@ -87,7 +91,9 @@ export function HeroImageRight() {
       <Container size="lg">
         <div className={classes.inner}>
           <div className={classes.content}>
-            <Title className={classes.title}>ようこそ、いらっしゃい</Title>
+            <Title className={classes.title}>
+              ようこそ、<span className={classes.textNoWrap}>いらっしゃい</span>
+            </Title>
 
             <Text className={classes.description} mt={30}>
               Study Hiragana and Katana, plan your next trip to Japan and
