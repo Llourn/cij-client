@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Layout from "@/src/components/layout";
-import { HeroImageRight } from "@/src/components/hero";
+import Landing from "../modules/Landing";
+import Layout from "../components/Layout";
 
 export default function Home() {
   return (
@@ -15,7 +15,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <HeroImageRight />
+        <Landing />
       </main>
     </Layout>
   );

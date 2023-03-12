@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { HeaderSimple } from "./header";
+import { FooterSocial } from "./FooterSocial";
+import { HeaderSimple } from "./HeaderSimple";
 
 export const siteTitle = "Cyriously In Japan";
 
@@ -34,13 +35,15 @@ export default function Layout({
       {home ? (
         <>
           <HeaderSimple links={landingPageLinks} />
+          {children}
+          <FooterSocial />
         </>
       ) : (
         <>
           <p>nothing</p>
+          {children}
         </>
       )}
-      {children}
     </div>
   );
 }
