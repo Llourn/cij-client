@@ -25,7 +25,7 @@ const mockdata = [
     icon: IconPlaneTilt,
   },
   {
-    title: 'Connect with other Users',
+    title: 'Connect with others',
     description:
       "Post your successes and struggles! Everyone here is moving toward a similar goal, let's help eachother out!",
     icon: IconUserPlus,
