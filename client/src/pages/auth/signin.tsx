@@ -13,7 +13,11 @@ export default function SignIn({
     <>
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
-          <button onClick={() => signIn(provider.id)}>
+          <button
+            onClick={() =>
+              signIn(provider.id, { redirect: true, callbackUrl: "/dashboard" })
+            }
+          >
             Sign in with {provider.name}
           </button>
         </div>

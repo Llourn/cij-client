@@ -12,6 +12,10 @@ export const authOptions = {
   theme: {
     colorScheme: "light",
   },
+  pages: {
+    signIn: "/auth/signin",
+  },
+  secret: process.env.JWT_SECRET,
 } as AuthOptions;
 
 export default NextAuth(authOptions);
