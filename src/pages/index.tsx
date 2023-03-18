@@ -1,12 +1,7 @@
 import Head from "next/head";
 import Landing from "../modules/landing";
-import Layout from "../layout/layout";
-import { useSession } from "next-auth/react";
-import Dashboard from "./dashboard";
 
 export default function Home() {
-  const { data: session, status } = useSession();
-
   return (
     <>
       <Head>
@@ -18,9 +13,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>{status === "authenticated" ? <Dashboard /> : <Landing />}</main>
+      <main>
+        <Landing />
+      </main>
     </>
-    //   <Layout auth={status === "authenticated"}>
-    // </Layout>
   );
 }

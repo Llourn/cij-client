@@ -1,19 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createStyles,
-  Header,
-  Container,
   Group,
   Burger,
   Paper,
   Transition,
   rem,
-  Button,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { MantineLogo } from "@mantine/ds";
 import { HeaderBase } from "./header-base";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import ProfilePic from "./profile-pic";
 
 const HEADER_HEIGHT = rem(60);
 
@@ -82,24 +81,25 @@ const useStyles = createStyles((theme) => ({
         .color,
     },
   },
+
+  container: {
+    display: "flex",
+    gap: rem(10),
+  },
 }));
 
-interface HeaderResponsiveProps {
-  links: { link: string; label: string }[];
+interface HeaderAuthProps {
+  imageUrl: string | null | undefined;
 }
 
 const locallinks = [
   {
-    link: "/about",
-    label: "Features",
+    link: "/dashboard",
+    label: "Home",
   },
   {
-    link: "/pricing",
-    label: "Pricing",
-  },
-  {
-    link: "/learn",
-    label: "Learn",
+    link: "/kanagame",
+    label: "Kana Game",
   },
   {
     link: "/community",
@@ -107,51 +107,70 @@ const locallinks = [
   },
 ];
 
-export function HeaderAuth({ links }: HeaderResponsiveProps) {
+export function HeaderAuth({ imageUrl }: HeaderAuthProps) {
   const [opened, { toggle, close }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
+  const [active, setActive] = useState(locallinks[0].link);
   const { classes, cx } = useStyles();
 
+  const router = useRouter();
+
+  useEffect(() => {
+    const basepath = router.asPath;
+    setActive(basepath);
+  }, [router.asPath]);
+
   const items = locallinks.map((link) => (
-    <a
+    <Link
       key={link.label}
       href={link.link}
       className={cx(classes.link, {
         [classes.linkActive]: active === link.link,
       })}
-      onClick={(event) => {
-        event.preventDefault();
+      onClick={() => {
         setActive(link.link);
         close();
       }}
     >
       {link.label}
-    </a>
+    </Link>
   ));
+
+  const signOutItem = (
+    <Link
+      key="Sign Out"
+      href="#"
+      className={classes.link}
+      onClick={() => {
+        signOut({ redirect: true, callbackUrl: "/" });
+        close();
+      }}
+    >
+      Sign Out
+    </Link>
+  );
 
   return (
     <HeaderBase>
-      <Group spacing={5} className={classes.links}>
-        <Button
-          variant="outline"
-          onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
-        >
-          Log Out
-        </Button>
-        {items}
-      </Group>
+      <div className={classes.container}>
+        <ProfilePic imageUrl={imageUrl} />
+        <Group spacing={5} className={classes.links}>
+          {items}
+          {signOutItem}
+        </Group>
 
-      <Burger
-        opened={opened}
-        onClick={toggle}
-        className={classes.burger}
-        size="sm"
-      />
+        <Burger
+          opened={opened}
+          onClick={toggle}
+          className={classes.burger}
+          size="sm"
+        />
+      </div>
 
-      <Transition transition="pop-top-right" duration={200} mounted={opened}>
+      <Transition transition="slide-down" duration={200} mounted={opened}>
         {(styles) => (
           <Paper className={classes.dropdown} withBorder style={styles}>
             {items}
+            {signOutItem}
           </Paper>
         )}
       </Transition>
