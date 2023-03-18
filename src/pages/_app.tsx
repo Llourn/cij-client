@@ -3,10 +3,12 @@ import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
+import Layout from "../layout/layout";
 
-export default function App(props: AppProps) {
-  const { Component, pageProps } = props;
-
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
     <>
       <Head>
@@ -16,7 +18,7 @@ export default function App(props: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <SessionProvider session={pageProps.session}>
+      <SessionProvider session={session}>
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS
@@ -44,7 +46,9 @@ export default function App(props: AppProps) {
             },
           }}
         >
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </MantineProvider>
       </SessionProvider>
     </>
