@@ -1,5 +1,6 @@
 import GoogleProvider from "next-auth/providers/google";
 import NextAuth, { AuthOptions } from "next-auth";
+import { useRouter } from "next/router";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -14,6 +15,9 @@ export const authOptions = {
   },
   pages: {
     signIn: "/auth/signin",
+  },
+  session: {
+    strategy: "jwt",
   },
   secret: process.env.JWT_SECRET,
 } as AuthOptions;

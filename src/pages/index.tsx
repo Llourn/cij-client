@@ -1,10 +1,9 @@
-import Head from 'next/head';
-import Landing from '../modules/landing';
-import Layout from '../components/layout';
+import Head from "next/head";
+import Landing from "../modules/landing";
 
 export default function Home() {
   return (
-    <Layout home>
+    <>
       <Head>
         <title>Cyriously in Japan</title>
         <meta
@@ -17,6 +16,6 @@ export default function Home() {
       <main>
         <Landing />
       </main>
-    </Layout>
+    </>
   );
 }
