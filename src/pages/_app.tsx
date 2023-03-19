@@ -4,6 +4,17 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 import Layout from "../layout/layout";
+import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+
+const notoSansJp = Noto_Sans_JP({
+  subsets: [],
+  weight: ["500"],
+});
+
+const notoSerifJp = Noto_Serif_JP({
+  subsets: [],
+  weight: ["500"],
+});
 
 export default function App({
   Component,
@@ -23,6 +34,14 @@ export default function App({
           withGlobalStyles
           withNormalizeCSS
           theme={{
+            globalStyles: (theme) => ({
+              ".jp-sans": {
+                fontFamily: notoSansJp.style.fontFamily,
+              },
+              ".jp-serif": {
+                fontFamily: notoSerifJp.style.fontFamily,
+              },
+            }),
             /** Put your mantine theme override here */
             colorScheme: "light",
             colors: {

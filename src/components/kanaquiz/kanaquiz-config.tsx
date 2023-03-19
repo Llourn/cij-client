@@ -1,8 +1,8 @@
-import ImageCheckbox from "@/src/components/image-checkbox";
-import { Button, Container, Group, Paper, SimpleGrid } from "@mantine/core";
+import { Container, Paper, SimpleGrid, Group, Button } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useRouter } from "next/router";
-import { KanaOptions } from "@/src/context/kanagame";
+import ImageCheckbox from "../image-checkbox";
+import { KanaOptions } from "@/src/types/kanaquiz";
+import { Dispatch, SetStateAction } from "react";
 
 const hiraganaOptions = [
   {
@@ -50,9 +50,22 @@ const katakanaOptions = [
   },
 ];
 
-export default function Kanagame() {
-  const router = useRouter();
+const allKana = {
+  hiraganaBase: true,
+  hiraganaDakuten: true,
+  hiraganaHandakuten: true,
+  hiraganaCombo: true,
+  katakanaBase: true,
+  katakanaDakuten: true,
+  katakanaHandakuten: true,
+  katakanaCombo: true,
+};
 
+export default function KanaquizConfig({
+  setKanaOptions,
+}: {
+  setKanaOptions: Dispatch<SetStateAction<KanaOptions>>;
+}) {
   const form = useForm({
     initialValues: {
       hiraganaBase: false,
@@ -65,29 +78,10 @@ export default function Kanagame() {
       katakanaCombo: false,
     },
   });
-
-  const selectAll = {
-    hiraganaBase: true,
-    hiraganaDakuten: true,
-    hiraganaHandakuten: true,
-    hiraganaCombo: true,
-    katakanaBase: true,
-    katakanaDakuten: true,
-    katakanaHandakuten: true,
-    katakanaCombo: true,
-  };
-
-  function startGame(values: KanaOptions) {
-    router.push({
-      pathname: "/kanagame/play",
-      query: { ...values },
-    });
-  }
-
   return (
     <Container size="sm">
       <Paper my={"xl"} p="xl" shadow="md">
-        <form onSubmit={form.onSubmit((values) => startGame(values))}>
+        <form onSubmit={form.onSubmit((values) => setKanaOptions(values))}>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
             <SimpleGrid cols={1}>
               {hiraganaOptions.map((option) => {
@@ -115,7 +109,7 @@ export default function Kanagame() {
             </SimpleGrid>
           </SimpleGrid>
           <Group spacing="md" mt="lg" position="right">
-            <Button variant="light" onClick={() => form.setValues(selectAll)}>
+            <Button variant="light" onClick={() => form.setValues(allKana)}>
               Select All
             </Button>
             <Button variant="light" onClick={() => form.reset()}>

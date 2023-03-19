@@ -98,8 +98,8 @@ const locallinks = [
     label: "Home",
   },
   {
-    link: "/kanagame",
-    label: "Kana Game",
+    link: "/kanaquiz",
+    label: "Kana Quiz",
   },
   {
     link: "/community",
