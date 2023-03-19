@@ -12,7 +12,7 @@ export default function App({
   return (
     <>
       <Head>
-        <title>Page title</title>
+        <title>Cyriously In Japan</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
