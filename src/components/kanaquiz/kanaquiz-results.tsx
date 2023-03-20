@@ -9,6 +9,7 @@ import {
   Center,
   Image,
   Group,
+  Grid,
 } from "@mantine/core";
 import kanaOptionsData from "../../data/kanaOptions.json";
 import { percentCompleted } from "@/src/utilities/general";
@@ -52,30 +53,37 @@ export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
 
     if (colData) {
       return (
-        <Paper withBorder radius="md" p="xs" key={colData.title}>
-          <Group>
-            <RingProgress
-              size={80}
-              roundCaps
-              thickness={8}
-              sections={[{ value: progress, color: "red" }]}
-              label={
-                <Center>
-                  <Image src={colData.image} alt={colData.title} width={40} />
-                </Center>
-              }
-            />
+        <Grid.Col xs={12} md={6} key={colData.title}>
+          <Paper withBorder radius="md">
+            <Group>
+              <RingProgress
+                size={80}
+                roundCaps
+                thickness={8}
+                sections={[{ value: progress, color: "red" }]}
+                label={
+                  <Center>
+                    <Image src={colData.image} alt={colData.title} width={40} />
+                  </Center>
+                }
+              />
 
-            <div>
-              <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
-                {colData.title}
-              </Text>
-              <Text weight={700} size="xl">
-                {totalCorrect}/{totalKana}
-              </Text>
-            </div>
-          </Group>
-        </Paper>
+              <div>
+                <Text
+                  color="dimmed"
+                  size="xs"
+                  transform="uppercase"
+                  weight={700}
+                >
+                  {colData.title}
+                </Text>
+                <Text weight={700} size="xl">
+                  {totalCorrect}/{totalKana}
+                </Text>
+              </div>
+            </Group>
+          </Paper>
+        </Grid.Col>
       );
     } else {
       return <></>;
@@ -85,13 +93,16 @@ export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
   return (
     <Container size="md" py="lg">
       <Paper shadow={"sm"} className={classes.resultsContainer}>
-        <SimpleGrid
+        {/* <SimpleGrid
           p={"md"}
           cols={2}
           breakpoints={[{ maxWidth: "sm", cols: 1 }]}
         >
           {stats}
-        </SimpleGrid>
+        </SimpleGrid> */}
+        <Grid grow gutter={"md"} p="md">
+          {stats}
+        </Grid>
       </Paper>
     </Container>
   );
