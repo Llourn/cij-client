@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   KanaCollection,
   KanaItem,
@@ -19,6 +19,7 @@ import { useForm } from "@mantine/form";
 import { IconX, IconCheck } from "@tabler/icons-react";
 import kanaData from "../../data/kana.json";
 import Response from "./response";
+import { percentCompleted } from "@/src/utilities/general";
 
 // countdown to start.
 // timer
@@ -55,16 +56,24 @@ const useStyles = createStyles((theme) => ({
   successResponse: { position: "absolute", right: 0 },
 }));
 
+interface KanaquizGameProps {
+  kanaOptions: KanaOptions;
+  kanaPool: KanaCollection[] | undefined;
+  setKanaPool: Dispatch<SetStateAction<KanaCollection[] | undefined>>;
+  showStats: () => void;
+}
+
 export default function KanaquizGame({
   kanaOptions,
-}: {
-  kanaOptions: KanaOptions;
-}) {
-  const [xReponseOpened, setXResposeOpened] = useState(false);
-  const [checkReponseOpened, setCheckResposeOpened] = useState(false);
+  kanaPool,
+  setKanaPool,
+  showStats,
+}: KanaquizGameProps) {
+  const [xReponseOpened, setXResponseOpened] = useState(false);
+  const [checkReponseOpened, setCheckResponseOpened] = useState(false);
   const [iterator, setIterator] = useState(0);
   const [kanaQueue, setKanaQueue] = useState<KanaQueueItem[]>();
-  const [kanaPool, setKanaPool] = useState<KanaCollection[]>();
+  // const [kanaPool, setKanaPool] = useState<KanaCollection[]>();
 
   const { classes, cx } = useStyles();
   const form = useForm({
@@ -79,10 +88,10 @@ export default function KanaquizGame({
       setKanaPool(kanaCollections);
       setKanaQueue(queue);
     }
-  }, [kanaOptions]);
+  }, [kanaOptions, setKanaPool, setKanaQueue]);
 
   const stagedKana = () => {
-    if (kanaQueue && kanaPool) {
+    if (kanaQueue && kanaPool && iterator <= kanaQueue.length - 1) {
       const { position, collectionName } = kanaQueue[iterator];
       const col = kanaPool.find((item) => item.name === collectionName);
       if (col) {
@@ -105,32 +114,25 @@ export default function KanaquizGame({
       setIterator((prevState) => {
         return prevState + 1;
       });
+    } else {
+      console.log("COMPLOEREJDS");
+      showStats();
     }
-
-    form.reset();
   };
 
   const success = () => {
     const staged = stagedKana();
     if (staged) staged.guessedCorrectly = true;
-    setCheckResposeOpened(true);
+    setCheckResponseOpened(true);
   };
 
   const fail = () => {
-    setXResposeOpened(true);
+    setXResponseOpened(true);
   };
 
   const clearResponses = () => {
-    setCheckResposeOpened(false);
-    setXResposeOpened(false);
-  };
-
-  const percentCompleted = () => {
-    if (kanaQueue) {
-      let num = Math.floor((iterator / (kanaQueue.length - 1)) * 100);
-      return num;
-    }
-    return 0;
+    setCheckResponseOpened(false);
+    setXResponseOpened(false);
   };
 
   return (
@@ -178,10 +180,15 @@ export default function KanaquizGame({
               Progress
             </Text>
             <Text fz="sm" color="dimmed">
-              {percentCompleted()}%
+              {percentCompleted(kanaQueue, iterator)}%
             </Text>
           </Group>
-          <Progress size="xl" value={percentCompleted()} striped mt={"md"} />
+          <Progress
+            size="xl"
+            value={percentCompleted(kanaQueue, iterator)}
+            striped
+            mt={"md"}
+          />
         </Paper>
       </Paper>
     </Container>

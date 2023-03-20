@@ -1,6 +1,7 @@
 import KanaquizConfig from "@/src/components/kanaquiz/kanaquiz-config";
 import KanaquizGame from "@/src/components/kanaquiz/kanaquiz-game";
-import { KanaOptions } from "@/src/types/kanaquiz";
+import KanaquizResults from "@/src/components/kanaquiz/kanaquiz-results";
+import { KanaCollection, KanaOptions } from "@/src/types/kanaquiz";
 import { Transition } from "@mantine/core";
 import { useState } from "react";
 
@@ -26,12 +27,20 @@ export default function Kanaquiz() {
   });
 
   const [gameState, setGameState] = useState(gameStatus.CONFIG);
+  const [kanaPool, setKanaPool] = useState<KanaCollection[]>();
 
   const startGame = (options: KanaOptions) => {
     setKanaOptions(options);
     setGameState(gameStatus.LOADING);
     setTimeout(() => {
       setGameState(gameStatus.PLAY);
+    }, TRANSITION_DURATION);
+  };
+
+  const showStats = () => {
+    setGameState(gameStatus.LOADING);
+    setTimeout(() => {
+      setGameState(gameStatus.COMPLETE);
     }, TRANSITION_DURATION);
   };
 
@@ -57,7 +66,24 @@ export default function Kanaquiz() {
       >
         {(styles) => (
           <div style={styles}>
-            <KanaquizGame kanaOptions={kanaOptions} />
+            <KanaquizGame
+              kanaOptions={kanaOptions}
+              kanaPool={kanaPool}
+              setKanaPool={setKanaPool}
+              showStats={showStats}
+            />
+          </div>
+        )}
+      </Transition>
+      <Transition
+        mounted={gameState === gameStatus.COMPLETE}
+        transition="pop"
+        duration={TRANSITION_DURATION}
+        timingFunction="ease-in-out"
+      >
+        {(styles) => (
+          <div style={styles}>
+            <KanaquizResults kanaPool={kanaPool} />
           </div>
         )}
       </Transition>

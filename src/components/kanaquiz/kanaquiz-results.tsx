@@ -1,78 +1,88 @@
-import { Container, createStyles, Paper } from "@mantine/core";
+import { KanaCollection, KanaItem } from "@/src/types/kanaquiz";
+import {
+  Container,
+  createStyles,
+  RingProgress,
+  Text,
+  SimpleGrid,
+  Paper,
+  Center,
+  Image,
+  Group,
+} from "@mantine/core";
+import kanaOptionsData from "../../data/kanaOptions.json";
+import { percentCompleted } from "@/src/utilities/general";
 
 const useStyles = createStyles((theme) => ({
   resultsContainer: {},
 }));
 
-export default function KanaquizResults() {
-  const { classes } = useStyles();
-  const stats = data.map((stat) => {
-    const Icon = icons[stat.icon];
-    return (
-      <Paper withBorder radius="md" p="xs" key={stat.label}>
-        <Group>
-          <RingProgress
-            size={80}
-            roundCaps
-            thickness={8}
-            sections={[{ value: stat.progress, color: stat.color }]}
-            label={
-              <Center>
-                <Icon size="1.4rem" stroke={1.5} />
-              </Center>
-            }
-          />
+const percentCorrect = (responseCollection: KanaItem[]) => {
+  let correctAnswers = responseCollection.filter(
+    (response) => response.guessedCorrectly
+  );
+  return percentCompleted(responseCollection, correctAnswers.length);
+};
 
-          <div>
-            <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
-              {stat.label}
-            </Text>
-            <Text weight={700} size="xl">
-              {stat.stats}
-            </Text>
-          </div>
-        </Group>
-      </Paper>
-    );
+interface KanaquizResultsProps {
+  kanaPool: KanaCollection[] | undefined;
+}
+
+export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
+  const { classes } = useStyles();
+
+  const stats = kanaPool?.map((pool) => {
+    const colData = [
+      ...kanaOptionsData.hiragana,
+      ...kanaOptionsData.katakana,
+    ].find((item) => item.label === pool.name);
+
+    let progress = percentCorrect(pool.collection);
+    progress = Math.floor(Math.random() * 100);
+
+    if (colData) {
+      return (
+        <Paper withBorder radius="md" p="xs" key={colData.title}>
+          <Group>
+            <RingProgress
+              size={80}
+              roundCaps
+              thickness={8}
+              sections={[{ value: progress, color: "red" }]}
+              label={
+                <Center>
+                  <Image src={colData.image} alt={colData.title} width={40} />
+                </Center>
+              }
+            />
+
+            <div>
+              <Text color="dimmed" size="xs" transform="uppercase" weight={700}>
+                {colData.title}
+              </Text>
+              <Text weight={700} size="xl">
+                {progress}/100
+              </Text>
+            </div>
+          </Group>
+        </Paper>
+      );
+    } else {
+      return <></>;
+    }
   });
 
   return (
-    <Container size="sm" py="lg">
+    <Container size="md" py="lg">
       <Paper shadow={"sm"} className={classes.resultsContainer}>
-        
-    <SimpleGrid cols={3} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-      {stats}
-    </SimpleGrid>
+        <SimpleGrid
+          p={"md"}
+          cols={2}
+          breakpoints={[{ maxWidth: "sm", cols: 1 }]}
+        >
+          {stats}
+        </SimpleGrid>
       </Paper>
     </Container>
   );
-
-
-
-  return (
-    
-  );
-}
-
-
-import { RingProgress, Text, SimpleGrid, Paper, Center, Group } from '@mantine/core';
-import { IconArrowUpRight, IconArrowDownRight } from '@tabler/icons-react';
-
-interface StatsRingProps {
-  data: {
-    label: string;
-    stats: string;
-    progress: number;
-    color: string;
-    icon: 'up' | 'down';
-  }[];
-}
-
-const icons = {
-  up: IconArrowUpRight,
-  down: IconArrowDownRight,
-};
-
-export function StatsRing({ data }: StatsRingProps) {
-  
 }
