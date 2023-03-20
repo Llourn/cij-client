@@ -1,4 +1,10 @@
-import { KanaCollection, KanaOptions } from "@/src/types/kanaquiz";
+import { useEffect, useState } from "react";
+import {
+  KanaCollection,
+  KanaItem,
+  KanaOptions,
+  KanaQueueItem,
+} from "@/src/types/kanaquiz";
 import {
   Container,
   createStyles,
@@ -8,19 +14,13 @@ import {
   rem,
   TextInput,
   Text,
-  Transition,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconX, IconCheck } from "@tabler/icons-react";
+import kanaData from "../../data/kana.json";
+import Response from "./response";
 
-import { useEffect, useState } from "react";
-import kana from "../../data/kana.json";
-
-// get options
-// compile array of characters.
-// build out the UI
 // countdown to start.
-// progress bar
 // timer
 
 const useStyles = createStyles((theme) => ({
@@ -48,60 +48,38 @@ const useStyles = createStyles((theme) => ({
     justifyContent: "center",
     width: rem(50),
   },
+  gameContainer: {
+    position: "relative",
+  },
+  errorResponse: { position: "absolute" },
+  successResponse: { position: "absolute", right: 0 },
 }));
 
 export default function KanaquizGame({
   kanaOptions,
 }: {
-  kanaOptions: KanaOptions | undefined;
+  kanaOptions: KanaOptions;
 }) {
-  const { classes, cx } = useStyles();
   const [xReponseOpened, setXResposeOpened] = useState(false);
   const [checkReponseOpened, setCheckResposeOpened] = useState(false);
   const [iterator, setIterator] = useState(0);
-  const [kanaQueue, setKanaQueue] = useState<
-    {
-      position: number;
-      collectionName: string;
-    }[]
-  >();
-  const [kanaPool, setKanaPool] = useState<
-    {
-      name: string;
-      collection: {
-        kana: string;
-        readings: string[];
-        guessedCorrectly: boolean;
-      }[];
-    }[]
-  >();
+  const [kanaQueue, setKanaQueue] = useState<KanaQueueItem[]>();
+  const [kanaPool, setKanaPool] = useState<KanaCollection[]>();
 
+  const { classes, cx } = useStyles();
   const form = useForm({
     initialValues: {
       kana: "",
     },
-    // validate: {
-    //   kana: (value) => (/\d|\W/.test(value) ? null : "Invalid input"),
-    // },
   });
 
   useEffect(() => {
     if (kanaOptions) {
-      const { gameCollections, positions } = combineKana(kanaOptions);
-      setKanaPool(gameCollections);
-      setKanaQueue(positions);
+      const { kanaCollections, queue } = combineKana(kanaOptions);
+      setKanaPool(kanaCollections);
+      setKanaQueue(queue);
     }
   }, [kanaOptions]);
-
-  // useEffect(() => {
-  //   if (kanaPool && kanaQueue) {
-  //     let collection = kanaPool?.find(
-  //       (element) => element.name === kanaQueue[iterator].collectionName
-  //     );
-  //     let chosen = collection?.collection[kanaQueue[iterator].position];
-  //     if (chosen) setStagedKana(chosen);
-  //   }
-  // }, [kanaQueue]);
 
   const stagedKana = () => {
     if (kanaQueue && kanaPool) {
@@ -111,31 +89,30 @@ export default function KanaquizGame({
         return col.collection[position];
       }
     }
-    return {
-      kana: "❌",
-      readings: ["❌"],
-      guessedCorrectly: false,
-    };
+    return null;
   };
 
   const onSubmit = (value: string) => {
     clearResponses();
-    if (stagedKana().readings.includes(value)) {
-      console.log("🎉", value);
+
+    if (stagedKana()?.readings.includes(value)) {
       success();
     } else {
       fail();
     }
+
     if (kanaQueue && iterator < kanaQueue.length - 1) {
       setIterator((prevState) => {
         return prevState + 1;
       });
     }
+
     form.reset();
   };
 
   const success = () => {
-    stagedKana().guessedCorrectly = true;
+    const staged = stagedKana();
+    if (staged) staged.guessedCorrectly = true;
     setCheckResposeOpened(true);
   };
 
@@ -158,53 +135,29 @@ export default function KanaquizGame({
 
   return (
     <Container size="sm" py={"lg"}>
-      <Paper shadow={"sm"} sx={{ position: "relative" }}>
-        <div style={{ position: "absolute" }}>
-          <Transition
-            mounted={xReponseOpened && !form.isTouched("kana")}
-            transition="slide-up"
-            duration={200}
-            timingFunction="ease"
+      <Paper shadow={"sm"} className={classes.gameContainer}>
+        <div className={classes.errorResponse}>
+          <Response
+            isActive={xReponseOpened && !form.isTouched("kana")}
+            customStyle={{ backgroundColor: "red" }}
           >
-            {(styles) => (
-              <Paper
-                className={classes.response}
-                radius={"xl"}
-                sx={{ backgroundColor: "red" }}
-                m="md"
-                style={styles}
-              >
-                <IconX size={36} strokeWidth={3} color={"white"} />
-              </Paper>
-            )}
-          </Transition>
+            <IconX size={36} strokeWidth={3} color={"white"} />
+          </Response>
         </div>
-        <div style={{ position: "absolute", right: 0 }}>
-          <Transition
-            mounted={checkReponseOpened && !form.isTouched("kana")}
-            transition="slide-up"
-            duration={200}
-            timingFunction="ease"
+        <div className={classes.successResponse}>
+          <Response
+            isActive={checkReponseOpened && !form.isTouched("kana")}
+            customStyle={{ backgroundColor: "green" }}
           >
-            {(styles) => (
-              <Paper
-                className={classes.response}
-                radius={"xl"}
-                sx={{ backgroundColor: "green" }}
-                m="md"
-                style={styles}
-              >
-                <IconCheck size={36} strokeWidth={3} color={"white"} />
-              </Paper>
-            )}
-          </Transition>
+            <IconCheck size={36} strokeWidth={3} color={"white"} />
+          </Response>
         </div>
         {/* <div className={cx(classes.countdown, "jp-sans")}>スタート！</div> */}
-        {stagedKana && (
+        {stagedKana ? (
           <div className={cx(classes.kanaContainer, "jp-sans")}>
-            {stagedKana().kana}
+            {stagedKana()?.kana}
           </div>
-        )}
+        ) : null}
         <div className={classes.inputContainer}>
           <form
             onSubmit={form.onSubmit((values) => {
@@ -212,6 +165,7 @@ export default function KanaquizGame({
             })}
           >
             <TextInput
+              autoFocus
               placeholder="Answer Here"
               className={classes.textInput}
               {...form.getInputProps("kana")}
@@ -227,7 +181,6 @@ export default function KanaquizGame({
               {percentCompleted()}%
             </Text>
           </Group>
-
           <Progress size="xl" value={percentCompleted()} striped mt={"md"} />
         </Paper>
       </Paper>
@@ -236,43 +189,38 @@ export default function KanaquizGame({
 }
 
 function combineKana(options: KanaOptions) {
-  let gameCollections = [] as {
-    name: string;
-    collection: {
-      kana: string;
-      readings: string[];
-      guessedCorrectly: boolean;
-    }[];
-  }[];
-  let positions = [];
-  const kanaCollection = kana;
+  let kanaCollections = [] as KanaCollection[];
+  let queue = [] as KanaQueueItem[];
 
   for (const key in options) {
     if (Object.prototype.hasOwnProperty.call(options, key)) {
       const element = options[key as keyof KanaOptions];
+
       if (element) {
-        let targetCollection = kanaCollection[key as keyof KanaOptions];
-        gameCollections.push({
+        let targetCollection = kanaData[key as keyof KanaOptions] as KanaItem[];
+
+        kanaCollections.push({
           name: key,
           collection: targetCollection,
-        });
-        let temp = [] as { position: number; collectionName: string }[];
+        } as KanaCollection);
+
+        let temp = [] as KanaQueueItem[];
+
         targetCollection.forEach((item, index) => {
           temp.push({ position: index, collectionName: key });
         });
-        positions.push(...temp);
+
+        queue.push(...temp);
       }
     }
   }
 
-  positions = shufflePositions(positions);
-  console.log("gamecollections", gameCollections);
-  console.log("positions", positions);
+  queue = shuffleQueue(queue);
 
-  return { gameCollections, positions };
+  return { kanaCollections, queue };
 }
 
-function shufflePositions(arr: { position: number; collectionName: string }[]) {
+function shuffleQueue(arr: KanaQueueItem[]) {
   for (var i = arr.length - 1; i >= 1; i -= 1) {
     var j = Math.floor(Math.random() * (i + 1));
     var temp = arr[i];

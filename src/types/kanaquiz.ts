@@ -19,3 +19,19 @@ export interface KanaCollection {
   katakanaHandakuten: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
   katakanaCombo: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
 }
+
+export interface KanaQueueItem {
+  position: number;
+  collectionName: string;
+}
+
+export interface KanaCollection {
+  name: string;
+  collection: KanaItem[];
+}
+
+export interface KanaItem {
+  kana: string;
+  readings: string[];
+  guessedCorrectly: boolean;
+}

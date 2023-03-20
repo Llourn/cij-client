@@ -1,4 +1,3 @@
-import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
@@ -35,6 +34,13 @@ export default function App({
           withNormalizeCSS
           theme={{
             globalStyles: (theme) => ({
+              // body: {
+              //   minHeight: "100vh",
+              // },
+              "#__next": {
+                minHeight: "100vh",
+                position: "relative",
+              },
               ".jp-sans": {
                 fontFamily: notoSansJp.style.fontFamily,
               },
