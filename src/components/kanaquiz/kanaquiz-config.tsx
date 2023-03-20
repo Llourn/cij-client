@@ -61,11 +61,11 @@ const allKana = {
   katakanaCombo: true,
 };
 
-export default function KanaquizConfig({
-  setKanaOptions,
-}: {
-  setKanaOptions: Dispatch<SetStateAction<KanaOptions>>;
-}) {
+interface KanaquizConfigProps {
+  startGame: (options: KanaOptions) => void;
+}
+
+export default function KanaquizConfig({ startGame }: KanaquizConfigProps) {
   const form = useForm({
     initialValues: {
       hiraganaBase: false,
@@ -81,7 +81,7 @@ export default function KanaquizConfig({
   return (
     <Container size="sm">
       <Paper my={"xl"} p="xl" shadow="md">
-        <form onSubmit={form.onSubmit((values) => setKanaOptions(values))}>
+        <form onSubmit={form.onSubmit((values) => startGame(values))}>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
             <SimpleGrid cols={1}>
               {hiraganaOptions.map((option) => {

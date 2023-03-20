@@ -3,6 +3,12 @@ import KanaquizGame from "@/src/components/kanaquiz/kanaquiz-game";
 import { KanaOptions } from "@/src/types/kanaquiz";
 import { useState } from "react";
 
+enum gameStatus {
+  CONFIG = "config",
+  PLAY = "play",
+  COMPLETE = "complete",
+}
+
 export default function Kanaquiz() {
   const [kanaOptions, setKanaOptions] = useState<KanaOptions>({
     hiraganaBase: false,
@@ -15,10 +21,21 @@ export default function Kanaquiz() {
     katakanaCombo: false,
   });
 
+  const [gameState, setGameState] = useState(gameStatus.CONFIG);
+
+  const startGame = (options: KanaOptions) => {
+    setKanaOptions(options);
+    setGameState(gameStatus.PLAY);
+  };
+
   return (
     <>
-      <KanaquizConfig setKanaOptions={setKanaOptions} />
-      <KanaquizGame kanaOptions={kanaOptions} />
+      {gameState === gameStatus.CONFIG && (
+        <KanaquizConfig startGame={startGame} />
+      )}
+      {gameState === gameStatus.PLAY && (
+        <KanaquizGame kanaOptions={kanaOptions} />
+      )}
     </>
   );
 }
