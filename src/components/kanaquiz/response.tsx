@@ -1,6 +1,6 @@
 import { createStyles, Paper, rem, Sx, Transition } from "@mantine/core";
 
-interface ResponseProps {
+interface AnswerResponseProps {
   children: React.ReactNode;
   customStyle?: Sx;
   isActive: boolean;
@@ -16,11 +16,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function Response({
+export default function AnswerResponse({
   isActive,
   customStyle,
   children,
-}: ResponseProps) {
+}: AnswerResponseProps) {
   const { classes } = useStyles();
 
   return (

@@ -21,7 +21,11 @@ const percentCorrect = (responseCollection: KanaItem[]) => {
   let correctAnswers = responseCollection.filter(
     (response) => response.guessedCorrectly
   );
-  return percentCompleted(responseCollection, correctAnswers.length);
+  let result = percentCompleted(responseCollection, correctAnswers.length);
+  if (result > 95 && correctAnswers.length !== responseCollection.length) {
+    result = 95;
+  }
+  return result;
 };
 
 interface KanaquizResultsProps {
@@ -38,7 +42,13 @@ export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
     ].find((item) => item.label === pool.name);
 
     let progress = percentCorrect(pool.collection);
-    progress = Math.floor(Math.random() * 100);
+    let totalKana = pool.collection.length;
+    let totalCorrect = pool.collection.filter(
+      (response) => response.guessedCorrectly
+    ).length;
+    // progress = Math.floor(Math.random() * 100);
+    console.log("progress", progress);
+    console.log("totalKana", totalKana);
 
     if (colData) {
       return (
@@ -61,7 +71,7 @@ export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
                 {colData.title}
               </Text>
               <Text weight={700} size="xl">
-                {progress}/100
+                {totalCorrect}/{totalKana}
               </Text>
             </div>
           </Group>

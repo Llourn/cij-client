@@ -18,7 +18,7 @@ import {
 import { useForm } from "@mantine/form";
 import { IconX, IconCheck } from "@tabler/icons-react";
 import kanaData from "../../data/kana.json";
-import Response from "./response";
+import AnswerResponse from "./response";
 import { percentCompleted } from "@/src/utilities/general";
 
 // countdown to start.
@@ -115,14 +115,15 @@ export default function KanaquizGame({
         return prevState + 1;
       });
     } else {
-      console.log("COMPLOEREJDS");
       showStats();
     }
+    form.reset();
   };
 
   const success = () => {
     const staged = stagedKana();
     if (staged) staged.guessedCorrectly = true;
+    console.log("YAY");
     setCheckResponseOpened(true);
   };
 
@@ -139,20 +140,20 @@ export default function KanaquizGame({
     <Container size="sm" py={"lg"}>
       <Paper shadow={"sm"} className={classes.gameContainer}>
         <div className={classes.errorResponse}>
-          <Response
+          <AnswerResponse
             isActive={xReponseOpened && !form.isTouched("kana")}
             customStyle={{ backgroundColor: "red" }}
           >
             <IconX size={36} strokeWidth={3} color={"white"} />
-          </Response>
+          </AnswerResponse>
         </div>
         <div className={classes.successResponse}>
-          <Response
+          <AnswerResponse
             isActive={checkReponseOpened && !form.isTouched("kana")}
             customStyle={{ backgroundColor: "green" }}
           >
             <IconCheck size={36} strokeWidth={3} color={"white"} />
-          </Response>
+          </AnswerResponse>
         </div>
         {/* <div className={cx(classes.countdown, "jp-sans")}>スタート！</div> */}
         {stagedKana ? (
