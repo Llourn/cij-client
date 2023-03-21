@@ -4,16 +4,13 @@ import {
   createStyles,
   RingProgress,
   Text,
-  SimpleGrid,
   Paper,
   Center,
   Image,
   Group,
   Grid,
-  Button,
 } from "@mantine/core";
 import kanaOptionsData from "../../data/kanaOptions.json";
-import { percentCompleted } from "@/src/utilities/general";
 import { useEffect, useState } from "react";
 
 const useStyles = createStyles((theme) => ({
@@ -24,11 +21,7 @@ const percentCorrect = (responseCollection: KanaItem[]) => {
   let correctAnswers = responseCollection.filter(
     (response) => response.guessedCorrectly
   );
-  let result = percentCompleted(responseCollection, correctAnswers.length);
-  if (result > 95 && correctAnswers.length !== responseCollection.length) {
-    result = 95;
-  }
-  return result;
+  return correctAnswers.length / responseCollection.length;
 };
 
 interface KanaquizResultsProps {
@@ -36,17 +29,12 @@ interface KanaquizResultsProps {
 }
 
 export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
-  // const [progressData, setProgressData] = useState<number[]>([
-  //   50, 75, 60, 20, 5, 90, 100, 13,
-  // ]);
   const [progressData, setProgressData] = useState<number[]>(() => {
     let newArr = [] as number[];
     console.log(kanaPool);
     kanaPool?.forEach((pool) => {
-      // newArr.push(percentCorrect(pool.collection));
-      newArr.push(Math.floor(Math.random() * 100));
+      newArr.push(percentCorrect(pool.collection));
     });
-    console.log("NEW", newArr);
     return newArr;
   });
 
@@ -54,21 +42,25 @@ export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
 
   useEffect(() => {
     let counter = 0;
-    let incrementProgress = progress;
+    let incrementProgress = [0, 0, 0, 0, 0, 0, 0, 0];
     let interval: NodeJS.Timer;
     setTimeout(() => {
       interval = setInterval(() => {
-        progress.forEach((element, index) => {
-          const difference = progressData[index] - progress[index];
-          incrementProgress[index] += (difference / 100) * 25;
+        progressData.forEach((element, index) => {
+          const difference = progressData[index] - incrementProgress[index];
+          incrementProgress[index] += (difference / 100) * 5.1;
         });
-
         setProgress([...incrementProgress]);
-        if (++counter >= 200 || progress[0] / progressData[0] > 0.999) {
+        if (
+          ++counter >= 2000 ||
+          incrementProgress[0] / progressData[0] > 0.99
+        ) {
+          console.log(incrementProgress[0] / progressData[0]);
+
           clearInterval(interval);
           setProgress([...progressData]);
         }
-      }, 100);
+      }, 10);
     }, 500);
 
     return () => clearInterval(interval);
@@ -82,17 +74,12 @@ export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
       ...kanaOptionsData.katakana,
     ].find((item) => item.label === pool.name);
 
-    // let progressInPercent = percentCorrect(pool.collection);
-    // // progressInPercent = Math.floor(Math.random() * 100);
-    // setProgressData((prevState) => {
-    //   let newArr = prevState;
-    //   newArr[index] = progressInPercent;
-    //   return [...newArr];
-    // });
     let totalKana = pool.collection.length;
+
     let totalCorrect = pool.collection.filter(
       (response) => response.guessedCorrectly
     ).length;
+
     if (colData) {
       return (
         <Grid.Col xs={12} md={6} key={colData.title}>
@@ -135,13 +122,6 @@ export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
   return (
     <Container size="md" py="lg">
       <Paper shadow={"sm"} className={classes.resultsContainer}>
-        {/* <SimpleGrid
-          p={"md"}
-          cols={2}
-          breakpoints={[{ maxWidth: "sm", cols: 1 }]}
-        >
-          {stats}
-        </SimpleGrid> */}
         <Grid grow gutter={"md"} p="md">
           {stats}
         </Grid>
