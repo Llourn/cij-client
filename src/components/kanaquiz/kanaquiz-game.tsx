@@ -102,6 +102,7 @@ export default function KanaquizGame({
   };
 
   const onSubmit = (value: string) => {
+    if (value === "skip") showStats();
     clearResponses();
 
     if (stagedKana()?.readings.includes(value)) {
