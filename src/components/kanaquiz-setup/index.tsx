@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import ImageCheckbox from "../image-checkbox";
-import { KanaOptions } from "@/src/types/kanaquiz";
+import { KanaCharacterSet } from "@/src/types/kanaquiz";
 import kanaOptionsData from "../../data/kanaOptions.json";
 
 const allKana = {
@@ -24,10 +24,12 @@ const allKana = {
 };
 
 interface KanaquizConfigProps {
-  startGame: (options: KanaOptions) => void;
+  startCountDown: (options: KanaCharacterSet) => void;
 }
 
-export default function KanaquizConfig({ startGame }: KanaquizConfigProps) {
+export default function KanaquizConfig({
+  startCountDown,
+}: KanaquizConfigProps) {
   const form = useForm({
     initialValues: {
       hiraganaBase: false,
@@ -45,18 +47,18 @@ export default function KanaquizConfig({ startGame }: KanaquizConfigProps) {
     console.log(form.values);
     for (const checkbox in form.values) {
       if (Object.prototype.hasOwnProperty.call(form.values, checkbox)) {
-        const element = form.values[checkbox as keyof KanaOptions];
+        const element = form.values[checkbox as keyof KanaCharacterSet];
         if (element) return false;
       }
     }
     return true;
   };
 
-  const handleSubmit = (values: KanaOptions) => {
+  const handleSubmit = (values: KanaCharacterSet) => {
     if (isEmptyForm()) {
-      form.resetTouched();
+      // TODO: display warning
     } else {
-      startGame(values);
+      startCountDown(values);
     }
   };
 

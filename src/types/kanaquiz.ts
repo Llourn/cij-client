@@ -1,4 +1,4 @@
-export type KanaOptions = {
+export type KanaCharacterSet = {
   hiraganaBase: boolean;
   hiraganaDakuten: boolean;
   hiraganaHandakuten: boolean;
@@ -9,28 +9,17 @@ export type KanaOptions = {
   katakanaCombo: boolean;
 };
 
-// export interface KanaCollection {
-//   hiraganaBase: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
-//   hiraganaDakuten: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
-//   hiraganaHandakuten: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
-//   hiraganaCombo: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
-//   katakanaBase: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
-//   katakanaDakuten: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
-//   katakanaHandakuten: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
-//   katakanaCombo: { kana: string; readings: string[]; guessedCorrectly: boolean }[];
-// }
-
 export interface KanaQueueItem {
   position: number;
   collectionName: string;
 }
 
-export interface KanaCollection {
+export interface KanaList {
   name: string;
-  collection: KanaItem[];
+  collection: KanaData[];
 }
 
-export interface KanaItem {
+export interface KanaData {
   kana: string;
   readings: string[];
   guessedCorrectly: boolean;

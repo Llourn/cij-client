@@ -1,4 +1,4 @@
-import { KanaCollection, KanaItem } from "@/src/types/kanaquiz";
+import { KanaList, KanaData } from "@/src/types/kanaquiz";
 import {
   Container,
   createStyles,
@@ -9,6 +9,7 @@ import {
   Image,
   Group,
   Grid,
+  Button,
 } from "@mantine/core";
 import kanaOptionsData from "../../data/kanaOptions.json";
 import { useEffect, useState } from "react";
@@ -17,7 +18,7 @@ const useStyles = createStyles((theme) => ({
   resultsContainer: {},
 }));
 
-const percentCorrect = (responseCollection: KanaItem[]) => {
+const percentCorrect = (responseCollection: KanaData[]) => {
   let correctAnswers = responseCollection.filter(
     (response) => response.guessedCorrectly
   );
@@ -25,10 +26,14 @@ const percentCorrect = (responseCollection: KanaItem[]) => {
 };
 
 interface KanaquizResultsProps {
-  kanaPool: KanaCollection[] | undefined;
+  kanaPool: KanaList[] | undefined;
+  resetGame: () => void;
 }
 
-export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
+export default function KanaquizResults({
+  kanaPool,
+  resetGame,
+}: KanaquizResultsProps) {
   const [progressData, setProgressData] = useState<number[]>(() => {
     let newArr = [] as number[];
     console.log(kanaPool);
@@ -121,10 +126,11 @@ export default function KanaquizResults({ kanaPool }: KanaquizResultsProps) {
 
   return (
     <Container size="md" py="lg">
-      <Paper shadow={"sm"} className={classes.resultsContainer}>
-        <Grid grow gutter={"md"} p="md">
+      <Paper shadow={"sm"} p="md" className={classes.resultsContainer}>
+        <Grid grow gutter={"md"} pb="md">
           {stats}
         </Grid>
+        <Button onClick={() => resetGame()}>Reset</Button>
       </Paper>
     </Container>
   );

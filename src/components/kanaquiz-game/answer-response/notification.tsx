@@ -16,7 +16,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function AnswerResponse({
+export default function Notification({
   isActive,
   customStyle,
   children,

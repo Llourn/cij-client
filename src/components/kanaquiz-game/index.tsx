@@ -1,31 +1,19 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-  KanaCollection,
-  KanaItem,
-  KanaOptions,
+  KanaList,
+  KanaData,
+  KanaCharacterSet,
   KanaQueueItem,
 } from "@/src/types/kanaquiz";
-import {
-  Container,
-  createStyles,
-  Group,
-  Paper,
-  Progress,
-  rem,
-  TextInput,
-  Text,
-} from "@mantine/core";
+import { Container, createStyles, Paper, rem, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconX, IconCheck } from "@tabler/icons-react";
 import kanaData from "../../data/kana.json";
-import AnswerResponse from "./response";
-import { percentCompleted } from "@/src/utilities/general";
-
-// countdown to start.
-// timer
+import AnswerResponse from "./answer-response";
+import ProgressBar from "./progress-bar";
+import CountDown from "./count-down";
 
 const useStyles = createStyles((theme) => ({
-  kanaContainer: {
+  kanaStage: {
     fontSize: "clamp(5rem, 18vw, 10rem)",
     textAlign: "center",
   },
@@ -42,24 +30,16 @@ const useStyles = createStyles((theme) => ({
     textAlign: "center",
     fontSize: "clamp(2rem, 16vw, 8rem)",
   },
-  response: {
-    aspectRatio: "1 / 1",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: rem(50),
-  },
+
   gameContainer: {
     position: "relative",
   },
-  errorResponse: { position: "absolute" },
-  successResponse: { position: "absolute", right: 0 },
 }));
 
 interface KanaquizGameProps {
-  kanaOptions: KanaOptions;
-  kanaPool: KanaCollection[] | undefined;
-  setKanaPool: Dispatch<SetStateAction<KanaCollection[] | undefined>>;
+  kanaOptions: KanaCharacterSet;
+  kanaPool: KanaList[] | undefined;
+  setKanaPool: Dispatch<SetStateAction<KanaList[] | undefined>>;
   showStats: () => void;
 }
 
@@ -69,11 +49,10 @@ export default function KanaquizGame({
   setKanaPool,
   showStats,
 }: KanaquizGameProps) {
-  const [xReponseOpened, setXResponseOpened] = useState(false);
-  const [checkReponseOpened, setCheckResponseOpened] = useState(false);
+  const [showFailResponse, setShowFailResponse] = useState(false);
+  const [showSuccessResponse, setShowSuccessResponse] = useState(false);
   const [iterator, setIterator] = useState(0);
-  const [kanaQueue, setKanaQueue] = useState<KanaQueueItem[]>();
-  // const [kanaPool, setKanaPool] = useState<KanaCollection[]>();
+  const [kanaQueue, setKanaQueue] = useState<KanaQueueItem[]>([]);
 
   const { classes, cx } = useStyles();
   const form = useForm({
@@ -93,7 +72,9 @@ export default function KanaquizGame({
   const stagedKana = () => {
     if (kanaQueue && kanaPool && iterator <= kanaQueue.length - 1) {
       const { position, collectionName } = kanaQueue[iterator];
-      const col = kanaPool.find((item) => item.name === collectionName);
+      const col = kanaPool.find(
+        (kanaCollection) => kanaCollection.name === collectionName
+      );
       if (col) {
         return col.collection[position];
       }
@@ -125,40 +106,28 @@ export default function KanaquizGame({
     const staged = stagedKana();
     if (staged) staged.guessedCorrectly = true;
     console.log("YAY");
-    setCheckResponseOpened(true);
+    setShowSuccessResponse(true);
   };
 
   const fail = () => {
-    setXResponseOpened(true);
+    setShowFailResponse(true);
   };
 
   const clearResponses = () => {
-    setCheckResponseOpened(false);
-    setXResponseOpened(false);
+    setShowSuccessResponse(false);
+    setShowFailResponse(false);
   };
 
   return (
     <Container size="sm" py={"lg"}>
       <Paper shadow={"sm"} className={classes.gameContainer}>
-        <div className={classes.errorResponse}>
-          <AnswerResponse
-            isActive={xReponseOpened && !form.isTouched("kana")}
-            customStyle={{ backgroundColor: "red" }}
-          >
-            <IconX size={36} strokeWidth={3} color={"white"} />
-          </AnswerResponse>
-        </div>
-        <div className={classes.successResponse}>
-          <AnswerResponse
-            isActive={checkReponseOpened && !form.isTouched("kana")}
-            customStyle={{ backgroundColor: "green" }}
-          >
-            <IconCheck size={36} strokeWidth={3} color={"white"} />
-          </AnswerResponse>
-        </div>
-        {/* <div className={cx(classes.countdown, "jp-sans")}>スタート！</div> */}
+        <AnswerResponse
+          showFailResponse={showFailResponse}
+          showSuccessResponse={showSuccessResponse}
+          formIsEmpty={!form.isDirty("kana")}
+        ></AnswerResponse>
         {stagedKana ? (
-          <div className={cx(classes.kanaContainer, "jp-sans")}>
+          <div className={cx(classes.kanaStage, "jp-sans")}>
             {stagedKana()?.kana}
           </div>
         ) : null}
@@ -176,42 +145,29 @@ export default function KanaquizGame({
             />
           </form>
         </div>
-        <Paper p={"xl"}>
-          <Group position="apart" mt="xs">
-            <Text fz="sm" color="dimmed">
-              Progress
-            </Text>
-            <Text fz="sm" color="dimmed">
-              {percentCompleted(kanaQueue, iterator)}%
-            </Text>
-          </Group>
-          <Progress
-            size="xl"
-            value={percentCompleted(kanaQueue, iterator)}
-            striped
-            mt={"md"}
-          />
-        </Paper>
+        <ProgressBar total={kanaQueue.length - 1} value={iterator} />
       </Paper>
     </Container>
   );
 }
 
-function combineKana(options: KanaOptions) {
-  let kanaCollections = [] as KanaCollection[];
+function combineKana(options: KanaCharacterSet) {
+  let kanaCollections = [] as KanaList[];
   let queue = [] as KanaQueueItem[];
 
   for (const key in options) {
     if (Object.prototype.hasOwnProperty.call(options, key)) {
-      const element = options[key as keyof KanaOptions];
+      const element = options[key as keyof KanaCharacterSet];
 
       if (element) {
-        let targetCollection = kanaData[key as keyof KanaOptions] as KanaItem[];
+        let targetCollection = kanaData[
+          key as keyof KanaCharacterSet
+        ] as KanaData[];
 
         kanaCollections.push({
           name: key,
           collection: targetCollection,
-        } as KanaCollection);
+        } as KanaList);
 
         let temp = [] as KanaQueueItem[];
 
