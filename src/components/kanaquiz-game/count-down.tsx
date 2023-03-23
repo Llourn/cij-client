@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   container: {
-    backgroundColor: "pink",
     minHeight: rem(430),
     height: "45vh",
     width: "100%",
@@ -28,12 +27,10 @@ enum Count {
 }
 
 interface CountDownProps {
-  startGame: Dispatch<SetStateAction<boolean>>;
+  startGame: () => void;
 }
 
-export default function CountDown({
-  startGame: setInputIsLocked,
-}: CountDownProps) {
+export default function CountDown({ startGame }: CountDownProps) {
   const [countDownState, setCountDownState] = useState<number>(4);
   const { classes, cx } = useStyles();
 
@@ -47,7 +44,6 @@ export default function CountDown({
         counter--;
         if (counter < 0) {
           clearInterval(interval);
-          setInputIsLocked(false);
         } else {
           setCountDownState(counter);
         }
@@ -56,6 +52,15 @@ export default function CountDown({
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (countDownState === 0) {
+      setTimeout(() => {
+        startGame();
+      }, 800);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countDownState]);
 
   return (
     <Paper className={classes.container}>
