@@ -10,7 +10,7 @@ import { useForm } from "@mantine/form";
 import kanaData from "../../data/kana.json";
 import AnswerResponse from "./answer-response";
 import ProgressBar from "./progress-bar";
-import CountDown from "./count-down";
+import Timer from "./timer";
 
 const useStyles = createStyles((theme) => ({
   kanaStage: {
@@ -145,6 +145,7 @@ export default function KanaquizGame({
             />
           </form>
         </div>
+        <Timer />
         <ProgressBar total={kanaQueue.length - 1} value={iterator} />
       </Paper>
     </Container>

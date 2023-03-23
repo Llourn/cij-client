@@ -4,7 +4,7 @@ import KanaquizResults from "@/src/components/kanaquiz-results";
 import { KanaList, KanaCharacterSet } from "@/src/types/kanaquiz";
 import { Transition } from "@mantine/core";
 import { useState } from "react";
-import CountDown from "@/src/components/kanaquiz-game/count-down";
+import CountDown from "@/src/components/kanaquiz/count-down";
 
 const TRANSITION_DURATION = 250;
 
