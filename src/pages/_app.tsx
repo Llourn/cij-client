@@ -34,9 +34,6 @@ export default function App({
           withNormalizeCSS
           theme={{
             globalStyles: (theme) => ({
-              // body: {
-              //   minHeight: "100vh",
-              // },
               "#__next": {
                 minHeight: "100vh",
                 position: "relative",

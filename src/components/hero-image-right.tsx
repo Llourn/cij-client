@@ -1,3 +1,4 @@
+import { signIn } from "next-auth/react";
 import {
   createStyles,
   Container,
@@ -5,31 +6,31 @@ import {
   Text,
   Button,
   rem,
-} from '@mantine/core';
+} from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   root: {
-    backgroundColor: '#11284b',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundColor: "#11284b",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
     backgroundImage:
-      'linear-gradient(250deg, rgba(130, 201, 30, 0) 0%, #3A525E 70%), url(https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2384&q=80)',
+      "linear-gradient(250deg, rgba(130, 201, 30, 0) 0%, #3A525E 70%), url(https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2384&q=80)",
     paddingTop: `calc(${theme.spacing.xl} * 3)`,
     paddingBottom: `calc(${theme.spacing.xl} * 3)`,
   },
 
   inner: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
 
-    [theme.fn.smallerThan('md')]: {
-      flexDirection: 'column',
+    [theme.fn.smallerThan("md")]: {
+      flexDirection: "column",
     },
   },
 
   image: {
-    [theme.fn.smallerThan('md')]: {
-      display: 'none',
+    [theme.fn.smallerThan("md")]: {
+      display: "none",
     },
   },
 
@@ -38,7 +39,7 @@ const useStyles = createStyles((theme) => ({
     paddingBottom: `calc(${theme.spacing.xl} * 2)`,
     marginRight: `calc(${theme.spacing.xl} * 3)`,
 
-    [theme.fn.smallerThan('md')]: {
+    [theme.fn.smallerThan("md")]: {
       marginRight: 0,
     },
   },
@@ -51,8 +52,8 @@ const useStyles = createStyles((theme) => ({
     maxWidth: rem(500),
     fontSize: rem(48),
 
-    [theme.fn.smallerThan('md')]: {
-      maxWidth: '100%',
+    [theme.fn.smallerThan("md")]: {
+      maxWidth: "100%",
       fontSize: rem(34),
       lineHeight: 1.15,
     },
@@ -63,8 +64,8 @@ const useStyles = createStyles((theme) => ({
     opacity: 0.75,
     maxWidth: rem(500),
 
-    [theme.fn.smallerThan('md')]: {
-      maxWidth: '100%',
+    [theme.fn.smallerThan("md")]: {
+      maxWidth: "100%",
     },
   },
 
@@ -74,13 +75,13 @@ const useStyles = createStyles((theme) => ({
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
     fontSize: rem(22),
 
-    [theme.fn.smallerThan('md')]: {
-      width: '100%',
+    [theme.fn.smallerThan("md")]: {
+      width: "100%",
     },
   },
 
   textNoWrap: {
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
   },
 }));
 
@@ -96,13 +97,13 @@ export function HeroImageRight() {
             </Title>
 
             <Text className={classes.description} mt={30}>
-              Study Hiragana and Katana, plan your next trip to Japan and
-              connect with a community of like-minded weebs!
+              Study Hiragana and Katana and hang out with other Japan-loving
+              individuals!
             </Text>
 
             <Button
               variant="white"
-              // gradient={{ from: "", to: "mainRed" }}
+              onClick={() => signIn()}
               size="xl"
               className={classes.control}
               mt={40}

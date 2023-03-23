@@ -4,6 +4,7 @@ import {
   SimpleGrid,
   Group,
   Button,
+  Title,
   Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -62,6 +63,11 @@ export default function KanaquizConfig({ startGame }: KanaquizConfigProps) {
   return (
     <Container size="sm">
       <Paper my={"xl"} p="xl" shadow="md">
+        <Title order={1}>Kana Quiz</Title>
+        <Text c="dimmed" pb={"md"}>
+          Welcome to the Kana Quiz! Please choose at least one of the following
+          collections and then click PLAY.
+        </Text>
         <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
           <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
             <SimpleGrid cols={1}>
