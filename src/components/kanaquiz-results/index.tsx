@@ -10,9 +10,11 @@ import {
   Group,
   Grid,
   Button,
+  Title,
 } from "@mantine/core";
 import kanaOptionsData from "../../data/kanaOptions.json";
 import { useEffect, useState } from "react";
+import { secondsToMinAndSec } from "@/src/utilities/general";
 
 const useStyles = createStyles((theme) => ({
   resultsContainer: {},
@@ -26,17 +28,18 @@ const percentCorrect = (responseCollection: KanaData[]) => {
 };
 
 interface KanaquizResultsProps {
+  timeCompleted: number;
   kanaPool: KanaList[] | undefined;
   resetGame: () => void;
 }
 
 export default function KanaquizResults({
+  timeCompleted,
   kanaPool,
   resetGame,
 }: KanaquizResultsProps) {
   const [progressData, setProgressData] = useState<number[]>(() => {
     let newArr = [] as number[];
-    console.log(kanaPool);
     kanaPool?.forEach((pool) => {
       newArr.push(percentCorrect(pool.collection));
     });
@@ -60,8 +63,6 @@ export default function KanaquizResults({
           ++counter >= 2000 ||
           incrementProgress[0] / progressData[0] > 0.99
         ) {
-          console.log(incrementProgress[0] / progressData[0]);
-
           clearInterval(interval);
           setProgress([...progressData]);
         }
@@ -127,10 +128,19 @@ export default function KanaquizResults({
   return (
     <Container size="md" py="lg">
       <Paper shadow={"sm"} p="md" className={classes.resultsContainer}>
+        <Title order={1}>Results</Title>
+        <Text c="dimmed" pb={"md"}>
+          おめでた! 🎉 You completed the quiz in{" "}
+          {secondsToMinAndSec(timeCompleted, true)}! Check out the stats below
+          to see how you did.
+        </Text>
+
         <Grid grow gutter={"md"} pb="md">
           {stats}
         </Grid>
-        <Button onClick={() => resetGame()}>Reset</Button>
+        <Group position="right">
+          <Button onClick={() => resetGame()}>Try Again</Button>
+        </Group>
       </Paper>
     </Container>
   );

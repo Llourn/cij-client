@@ -44,7 +44,6 @@ export default function KanaquizConfig({
   });
 
   const isEmptyForm = () => {
-    console.log(form.values);
     for (const checkbox in form.values) {
       if (Object.prototype.hasOwnProperty.call(form.values, checkbox)) {
         const element = form.values[checkbox as keyof KanaCharacterSet];

@@ -40,7 +40,7 @@ interface KanaquizGameProps {
   kanaOptions: KanaCharacterSet;
   kanaPool: KanaList[] | undefined;
   setKanaPool: Dispatch<SetStateAction<KanaList[] | undefined>>;
-  showStats: () => void;
+  showStats: (timeInSeconds: number) => void;
 }
 
 export default function KanaquizGame({
@@ -53,6 +53,7 @@ export default function KanaquizGame({
   const [showSuccessResponse, setShowSuccessResponse] = useState(false);
   const [iterator, setIterator] = useState(0);
   const [kanaQueue, setKanaQueue] = useState<KanaQueueItem[]>([]);
+  const [timeInSeconds, setTimeInSeconds] = useState<number>(0);
 
   const { classes, cx } = useStyles();
   const form = useForm({
@@ -64,8 +65,8 @@ export default function KanaquizGame({
   useEffect(() => {
     if (kanaOptions) {
       const { kanaCollections, queue } = combineKana(kanaOptions);
-      setKanaPool(kanaCollections);
-      setKanaQueue(queue);
+      setKanaPool([...kanaCollections]);
+      setKanaQueue([...queue]);
     }
   }, [kanaOptions, setKanaPool, setKanaQueue]);
 
@@ -83,7 +84,10 @@ export default function KanaquizGame({
   };
 
   const onSubmit = (value: string) => {
-    if (value === "skip") showStats();
+    if (value === "skip") {
+      setKanaQueue([]);
+      showStats(timeInSeconds);
+    }
     clearResponses();
 
     if (stagedKana()?.readings.includes(value)) {
@@ -97,7 +101,8 @@ export default function KanaquizGame({
         return prevState + 1;
       });
     } else {
-      showStats();
+      setKanaQueue([]);
+      showStats(timeInSeconds);
     }
     form.reset();
   };
@@ -105,7 +110,6 @@ export default function KanaquizGame({
   const success = () => {
     const staged = stagedKana();
     if (staged) staged.guessedCorrectly = true;
-    console.log("YAY");
     setShowSuccessResponse(true);
   };
 
@@ -145,7 +149,7 @@ export default function KanaquizGame({
             />
           </form>
         </div>
-        <Timer />
+        <Timer setTimeInSeconds={setTimeInSeconds} />
         <ProgressBar total={kanaQueue.length - 1} value={iterator} />
       </Paper>
     </Container>
@@ -167,7 +171,7 @@ function combineKana(options: KanaCharacterSet) {
 
         kanaCollections.push({
           name: key,
-          collection: targetCollection,
+          collection: [...targetCollection],
         } as KanaList);
 
         let temp = [] as KanaQueueItem[];
