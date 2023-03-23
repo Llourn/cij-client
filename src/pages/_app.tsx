@@ -1,9 +1,19 @@
-import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
 import Layout from "../layout/layout";
+import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+
+const notoSansJp = Noto_Sans_JP({
+  subsets: [],
+  weight: ["500"],
+});
+
+const notoSerifJp = Noto_Serif_JP({
+  subsets: [],
+  weight: ["500"],
+});
 
 export default function App({
   Component,
@@ -12,7 +22,7 @@ export default function App({
   return (
     <>
       <Head>
-        <title>Page title</title>
+        <title>Cyriously In Japan</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -23,6 +33,18 @@ export default function App({
           withGlobalStyles
           withNormalizeCSS
           theme={{
+            globalStyles: (theme) => ({
+              "#__next": {
+                minHeight: "100vh",
+                position: "relative",
+              },
+              ".jp-sans": {
+                fontFamily: notoSansJp.style.fontFamily,
+              },
+              ".jp-serif": {
+                fontFamily: notoSerifJp.style.fontFamily,
+              },
+            }),
             /** Put your mantine theme override here */
             colorScheme: "light",
             colors: {

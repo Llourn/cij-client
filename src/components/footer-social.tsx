@@ -1,29 +1,32 @@
-import { createStyles, Container, Group, ActionIcon, rem } from '@mantine/core';
-import { IconBrandTwitter } from '@tabler/icons-react';
-import MainLogo from './main-logo';
+import { createStyles, Container, Group, ActionIcon, rem } from "@mantine/core";
+import { IconBrandTwitter } from "@tabler/icons-react";
+import MainLogo from "./main-logo";
 
 const useStyles = createStyles((theme) => ({
   footer: {
-    marginTop: rem(120),
+    // marginTop: rem(120),
+    position: "absolute",
+    width: "100%",
+    bottom: 0,
     borderTop: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]
+      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
     }`,
   },
 
   inner: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingTop: theme.spacing.xl,
     paddingBottom: theme.spacing.xl,
 
-    [theme.fn.smallerThan('xs')]: {
-      flexDirection: 'column',
+    [theme.fn.smallerThan("xs")]: {
+      flexDirection: "column",
     },
   },
 
   links: {
-    [theme.fn.smallerThan('xs')]: {
+    [theme.fn.smallerThan("xs")]: {
       marginTop: theme.spacing.md,
     },
   },
