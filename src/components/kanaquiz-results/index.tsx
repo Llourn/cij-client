@@ -56,7 +56,7 @@ export default function KanaquizResults({
       interval = setInterval(() => {
         progressData.forEach((element, index) => {
           const difference = progressData[index] - incrementProgress[index];
-          incrementProgress[index] += (difference / 100) * 5.1;
+          incrementProgress[index] += (difference / 100) * 5;
         });
         setProgress([...incrementProgress]);
         if (
@@ -95,7 +95,7 @@ export default function KanaquizResults({
                 size={80}
                 roundCaps
                 thickness={8}
-                sections={[{ value: progress[index], color: "red" }]}
+                sections={[{ value: progress[index] * 100, color: "red" }]}
                 label={
                   <Center>
                     <Image src={colData.image} alt={colData.title} width={40} />

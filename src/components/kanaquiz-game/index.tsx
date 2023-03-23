@@ -128,7 +128,7 @@ export default function KanaquizGame({
         <AnswerResponse
           showFailResponse={showFailResponse}
           showSuccessResponse={showSuccessResponse}
-          formIsEmpty={!form.isDirty("kana")}
+          formIsEmpty={!form.isTouched("kana")}
         ></AnswerResponse>
         {stagedKana ? (
           <div className={cx(classes.kanaStage, "jp-sans")}>
@@ -165,9 +165,9 @@ function combineKana(options: KanaCharacterSet) {
       const element = options[key as keyof KanaCharacterSet];
 
       if (element) {
-        let targetCollection = kanaData[
-          key as keyof KanaCharacterSet
-        ] as KanaData[];
+        let targetCollection = structuredClone(
+          kanaData[key as keyof KanaCharacterSet]
+        ) as KanaData[];
 
         kanaCollections.push({
           name: key,

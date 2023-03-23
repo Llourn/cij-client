@@ -36,14 +36,6 @@ export default function Kanaquiz() {
   const resetGame = () => {
     setGameState(gameStatus.LOADING);
     setTimeout(() => {
-      for (const key in kanaData) {
-        if (Object.prototype.hasOwnProperty.call(kanaData, key)) {
-          const element = kanaData[key as keyof KanaCharacterSet] as KanaData[];
-          element.forEach((datapoint) => {
-            datapoint.guessedCorrectly = false;
-          });
-        }
-      }
       setKanaPool(undefined);
       setGameState(gameStatus.CONFIG);
     }, TRANSITION_DURATION);
