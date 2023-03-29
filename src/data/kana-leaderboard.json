@@ -1,74 +1,74 @@
 {
   "topTen": [
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=47",
       "name": "Terrance",
       "score": 100,
       "timeInSeconds": 200,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=48",
       "name": "けんしろ",
       "score": 100,
       "timeInSeconds": 256,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=49",
       "name": "Rylee",
       "score": 100,
       "timeInSeconds": 300,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=50",
       "name": "Jade",
       "score": 90,
       "timeInSeconds": 140,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=51",
       "name": "Malone",
       "score": 92,
       "timeInSeconds": 400,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=52",
       "name": "Minoru",
       "score": 84,
       "timeInSeconds": 178,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=53",
       "name": "Vic",
       "score": 70,
       "timeInSeconds": 300,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=54",
       "name": "Bellamy",
       "score": 50,
       "timeInSeconds": 56,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=55",
       "name": "Sunny",
       "score": 68,
       "timeInSeconds": 240,
-      "profileLink": ""
+      "profileUrl": "/community"
     },
     {
-      "profilePicture": "https://i.pravatar.cc/300",
+      "imageUrl": "https://i.pravatar.cc/300?img=56",
       "name": "かいぽ",
       "score": 100,
       "timeInSeconds": 6000,
-      "profileLink": ""
+      "profileUrl": "/community"
     }
   ]
 }
